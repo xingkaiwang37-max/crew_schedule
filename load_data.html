@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSN航班调度数据加载</title>
+    <link rel="stylesheet" href="style_1.css"> <!-- 复用主页的通用样式 -->
+    <!-- 如果需要 Font Awesome 图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- 引入 DataTables CSS，用于美化表格和提供功能 -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <!-- 引入 Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="images/plane_logo.jpg" alt="飞机 Logo"> <!-- 使用本地 Logo 路径 -->
+                <h1>机器学习驱动的机组排班系统</h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="data-load-page">
+        <div class="container">
+            <div class="card">
+                <h2 class="page-title"><i class="far fa-calendar-alt"></i> CSN航班调度数据加载</h2>
+
+                <div class="form-section">
+                    <p class="description">选择日期并点击按钮加载和查询CSN调度数据:</p>
+
+                    <div class="date-input-group">
+                        <label for="scheduleDate">选择日期:</label>
+                        <div class="input-with-icon">
+                            <input type="text" id="scheduleDate" class="date-picker" value="2025/05/29" readonly>
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <p class="hint">请选择要查询的航班日期</p>
+                    </div>
+
+                    <button id="loadDataBtn" class="btn-primary-blue">
+                        <i class="fas fa-cloud-download-alt"></i> 加载CSN调度数据
+                    </button>
+                </div>
+
+                <button id="backToHome" class="btn-secondary-gray"><i class="fas fa-arrow-left"></i> 返回首页</button>
+            </div>
+
+            <!-- 数据加载成功提示 -->
+            <div id="successMessage" class="alert success-alert" style="display: none;">
+                <i class="fas fa-check-circle"></i> 数据加载成功！在 <span id="loadedDate"></span> 找到 <span id="recordCount"></span> 条航班记录.
+            </div>
+
+            <div class="data-table-section" style="display: none;">
+                <table id="scheduleTable" class="display compact" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>航班号 <i class="fas fa-sort"></i></th>
+                            <th>起飞机场 <i class="fas fa-sort"></i></th>
+                            <th>到达机场 <i class="fas fa-sort"></i></th>
+                            <th>计划起飞时间 <i class="fas fa-sort"></i></th>
+                            <th>计划抵达时间 <i class="fas fa-sort"></i></th>
+                            <th>机尾号 <i class="fas fa-sort"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 数据将由 JavaScript 填充 -->
+                    </tbody>
+                </table>
+                <button id="nextStepBtn" class="btn-primary-green"><i class="fas fa-cloud-sun"></i> 下一步：智能机组排班求解</button>
+            </div>
+
+            <!-- 新增：数据分析图表区域 -->
+            <div id="analysis-section" class="card" style="display: none; margin-top: 20px;">
+                <h3 class="section-title">数据分析可视化</h3>
+                <!-- 使用 Flexbox 容器让图表并排 -->
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+                    <!-- 机组基地分布图 -->
+                    <div id="crew-base-chart" style="width: 48%; min-width: 300px; height: 400px;"></div>
+                    <!-- 新增：地面任务分布饼图 -->
+                    <div id="ground-duty-chart" style="width: 48%; min-width: 300px; height: 400px;"></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- jQuery 是 DataTables 的依赖 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- 引入 Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- 新增：引入 ECharts.js -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.min.js"></script>
+    <!-- 自定义脚本 -->
+    <script src="load_data.js"></script>
+</body>
+</html>

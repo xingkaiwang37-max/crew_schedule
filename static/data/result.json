@@ -1,0 +1,115 @@
+{
+  "yAxisCategories": [
+    "C001 - 张三 (机长)",
+    "C002 - 李四 (副驾驶)",
+    "C003 - 王五 (乘务长)",
+    "C004 - 赵六 (乘务员)"
+  ],
+  "seriesData": [
+    {
+      "id": "crew1_task1",
+      "name": "CA1405",
+      "start": 1765088400000,
+      "end": 1765099200000,
+      "y": 0,
+      "color": "#2a9d8f",
+      "taskType": "飞行",
+      "dep": "PEK",
+      "arr": "CTU"
+    },
+    {
+      "id": "crew1_task2",
+      "name": "外站休息",
+      "start": 1765102800000,
+      "end": 1765146000000,
+      "y": 0,
+      "color": "#e9c46a",
+      "dependency": "crew1_task1",
+      "taskType": "休息占位"
+    },
+    {
+      "id": "crew1_task3",
+      "name": "CA1406",
+      "start": 1765152000000,
+      "end": 1765162800000,
+      "y": 0,
+      "color": "#2a9d8f",
+      "dependency": "crew1_task2",
+      "taskType": "飞行",
+      "dep": "CTU",
+      "arr": "PEK"
+    },
+    {
+      "id": "crew2_task1",
+      "name": "CA1405",
+      "start": 1765088400000,
+      "end": 1765099200000,
+      "y": 1,
+      "color": "#2a9d8f",
+      "taskType": "飞行",
+      "dep": "PEK",
+      "arr": "CTU"
+    },
+    {
+      "id": "crew2_task2",
+      "name": "外站休息",
+      "start": 1765102800000,
+      "end": 1765146000000,
+      "y": 1,
+      "color": "#e9c46a",
+      "dependency": "crew2_task1",
+      "taskType": "休息占位"
+    },
+    {
+      "id": "crew2_task3",
+      "name": "CA1406",
+      "start": 1765152000000,
+      "end": 1765162800000,
+      "y": 1,
+      "color": "#2a9d8f",
+      "dependency": "crew2_task2",
+      "taskType": "飞行",
+      "dep": "CTU",
+      "arr": "PEK"
+    },
+    {
+      "id": "crew3_task1",
+      "name": "基地备份 (SBY)",
+      "start": 1765084800000,
+      "end": 1765113600000,
+      "y": 2,
+      "color": "#f4a261",
+      "taskType": "地面执勤"
+    },
+    {
+      "id": "crew3_task2",
+      "name": "MU5131",
+      "start": 1765171200000,
+      "end": 1765182000000,
+      "y": 2,
+      "color": "#2a9d8f",
+      "taskType": "飞行",
+      "dep": "SHA",
+      "arr": "CAN"
+    },
+    {
+      "id": "crew4_task1",
+      "name": "模拟机训练 (SIM)",
+      "start": 1765088400000,
+      "end": 1765102800000,
+      "y": 3,
+      "color": "#f4a261",
+      "taskType": "地面执勤"
+    },
+    {
+      "id": "crew4_task2",
+      "name": "地面理论培训 (GRD)",
+      "start": 1765106400000,
+      "end": 1765117200000,
+      "y": 3,
+      "color": "#f4a261",
+      "dependency": "crew4_task1",
+      "taskType": "地面执勤"
+    }
+  ]
+}

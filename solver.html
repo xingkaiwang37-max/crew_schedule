@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能机组排班求解</title>
+    <link rel="stylesheet" href="style_1.css">
+    <link rel="stylesheet" href="style_solver.css"> <!-- 特定于此页面的样式 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="/static/images/plane_logo.jpg" alt="飞机 Logo">
+                <h1>机器学习驱动的机组排班系统</h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="solver-page">
+        <div class="container">
+            <!-- 求解选项卡 -->
+            <div class="card">
+                <h2 class="page-title"><i class="fas fa-cogs"></i> 智能机组排班求解</h2>
+                
+                <!-- 求解模式 -->
+                <div class="form-group">
+                    <label>求解模式:</label>
+                    <div class="radio-group">
+                        <input type="radio" id="single-base" name="solver-mode" value="single-base" checked>
+                        <label for="single-base">单基地求解</label>
+                        <input type="radio" id="multi-base" name="solver-mode" value="multi-base">
+                        <label for="multi-base">多基地求解</label>
+                    </div>
+                </div>
+
+                <!-- 日期范围 -->
+                <div class="form-group">
+                    <label for="date-range">选择起止日期:</label>
+                    <div class="input-with-icon">
+                        <input type="text" id="date-range" class="date-picker" placeholder="选择日期范围..." readonly>
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+
+                <!-- 操作按钮 -->
+                <div class="button-group">
+                    <button id="start-solve-btn" class="btn-primary-blue"><i class="fas fa-play-circle"></i> 开始求解</button>
+                    <button id="backToDataLoad" class="btn-secondary-gray"><i class="fas fa-arrow-left"></i> 返回数据加载</button>
+                    <!-- 新增：排班结果分析按钮，初始隐藏 -->
+                    <button id="analyze-result-btn" class="btn-primary-green" style="display: none; margin-left: 10px;"><i class="fas fa-chart-bar"></i> 排班结果分析</button>
+                </div>
+            </div>
+
+            <!-- 求解结果区域 -->
+            <div id="result-section" class="card" style="display: none; margin-top: 20px;">
+                <h3 id="result-title" class="section-title">求解结果</h3>
+                <!-- 加载动画 -->
+                <div id="loading-spinner" class="spinner-container" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>正在进行智能求解，请稍候... (预计需要3-5秒)</p>
+                </div>
+
+                <!-- 新增：搜索框 -->
+                <div id="gantt-controls" style="display: none; margin-bottom: 1rem;">
+                    <div class="input-with-icon" style="max-width: 400px; display: inline-block;">
+                        <input type="text" id="gantt-search-input" placeholder="搜索机组ID或航班号...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <button id="gantt-search-btn" class="btn-primary-blue" style="margin-left: 10px;">搜索</button>
+                    <button id="gantt-reset-btn" class="btn-secondary-gray">重置</button>
+                </div>
+
+                <!-- 甘特图容器 -->
+                <div id="gantt-container" style="width: 100%; min-height: 400px; margin-top: 1em;"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Highcharts Gantt JS -->
+    <script src="https://code.highcharts.com/gantt/highcharts-gantt.js"></script>
+    <script src="https://code.highcharts.com/gantt/modules/exporting.js"></script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- 自定义脚本 -->
+    <script src="solver.js"></script>
+</body>
+</html>

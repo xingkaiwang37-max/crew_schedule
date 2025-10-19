@@ -1,0 +1,76 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+    max-width: 1000px;
+    margin: auto;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+section {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+h1, h2, h3 {
+    color: #0056b3;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* D3图表容器样式 */
+#hierarchy-chart svg, #overall-weights-chart svg {
+    display: block;
+    margin: auto;
+    border: 1px solid #eee;
+    background-color: #fafafa;
+}
+
+.iframe-container {
+    text-align: center; /* 确保iframe容器内部元素（如iframe本身，如果display:block）可以居中 */
+    margin-top: 20px;
+    /* 可以给容器设置最大宽度，让iframe在其内部自适应 */
+    max-width: 800px; /* 示例 */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.iframe-container iframe {
+    display: block; /* 使iframe成为块级元素，配合margin: auto居中 */
+    margin: auto;
+    border: 1px solid #ddd; /* 给iframe加个边框 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 添加阴影 */
+}

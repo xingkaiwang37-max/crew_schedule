@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>层次分析法（AHP）动态展示</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 引入D3.js库 -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>层次分析法（AHP）动态展示</h1>
+    </header>
+
+    <main>
+        <!-- <section id="problem-description">
+            <h2>问题描述</h2>
+            <p>这是一个关于项目选择的决策问题。我们将使用AHP来评估不同项目。</p>
+        </section> -->
+
+        <section id="hierarchy-structure">
+            <h2>层次结构图</h2>
+            <div class="iframe-container">
+                <iframe src="images/ahp_hierarchy.html"
+                        frameborder="0"
+                        width="100%"
+                        height="500px"
+                        allowfullscreen>
+                </iframe>
+            </div>
+        </section>
+
+        <section id="judgment-matrices">
+            <h2>判断矩阵</h2>
+            <div id="matrix-criteria">
+                <h3>准则层判断矩阵</h3>
+            </div>
+        </section>
+
+        <section id="weight-calculation">
+            <h2>权重计算与一致性检验</h2>
+            <div id="weights-criteria">
+                <h3>准则层权重</h3>
+            </div>
+            <div id="consistency-criteria">
+                <h3>准则层一致性检验</h3>
+            </div>
+        </section>
+
+        <section id="overall-weights">
+            <h2>总排序权重</h2>
+            <div id="overall-weights-table"></div>
+            <div id="overall-weights-chart"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 AHP 动态展示</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

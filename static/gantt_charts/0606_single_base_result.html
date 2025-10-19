@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>机组排班甘特图</title>
+  <script src="https://code.highcharts.com/gantt/highcharts-gantt.js"></script>
+  <script src="https://code.highcharts.com/gantt/modules/exporting.js"></script>
+</head>
+<body>
+
+<div id="container" style="min-width: 800px; height: 400px; margin: 1em auto;"></div>
+
+<script>
+fetch('/static/data/single_base_gantt_chart_data.json')
+  .then(response => response.json())
+  .then(data => {
+    // --- 新增的代码开始 ---
+    
+    // 1. 定义每一行的大致高度和图表的额外边距
+    const rowHeight = 40; // 每行分配40像素
+    const chartPadding = 100; // 为标题、X轴等上下留出100像素空间
+
+    // 2. 根据机组人员数量计算总高度
+    const numCategories = data.yAxisCategories.length;
+    const newHeight = (numCategories * rowHeight) + chartPadding;
+
+    // 3. 将计算出的高度应用到容器上
+    document.getElementById('container').style.height = newHeight + 'px';
+
+    // --- 新增的代码结束 ---
+
+
+    // 4. 使用数据初始化图表（这部分代码不变）
+    Highcharts.ganttChart('container', {
+      title: {
+        text: '机组排班结果甘特图'
+      },
+      yAxis: {
+        uniqueNames: true,
+        categories: data.yAxisCategories
+      },
+      // ... 其他配置保持不变 ...
+      series: [{
+        name: '排班任务',
+        data: data.seriesData
+      }]
+    });
+  })
+  .catch(error => console.error('Error loading or parsing data:', error));
+</script>
+
+</body>
+</html>

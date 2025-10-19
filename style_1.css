@@ -1,0 +1,462 @@
+/* 基本重置 */
+body, h1, h2, p, ul {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header 样式 */
+.header {
+    background-color: #1a237e; /* 深蓝色背景 */
+    color: #fff;
+    padding: 15px 0;
+    position: absolute; /* 绝对定位，使其浮在 hero-section 上 */
+    width: 100%;
+    z-index: 1000; /* 确保在最上层 */
+}
+
+.header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 使 logo 和可能的导航左右对齐 */
+}
+
+.header .logo {
+    display: flex;
+    align-items: center;
+}
+
+.header .logo img {
+    height: 30px; /* Logo 图片高度 */
+    margin-right: 10px;
+    /* filter: brightness(0) invert(1); 如果原始 logo 是彩色的，尝试使其变为白色 */
+}
+
+.header .logo h1 {
+    font-size: 18px;
+    font-weight: normal;
+    color: #fff;
+}
+
+/* Hero Section 样式 */
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* 视口高度 */
+    background: url('https://5b0988e595225.cdn.sohucs.com/images/20180802/95f93cc3add84066a463e48e431347dd.jpeg') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+
+/* 背景叠加层，使文字更易读 */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* 40% 透明度的黑色叠加 */
+}
+
+.hero-content {
+    position: relative; /* 确保内容在叠加层之上 */
+    z-index: 1;
+    max-width: 800px;
+    padding: 20px;
+}
+
+.hero-content .main-title {
+    font-size: 64px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 文本阴影增强可读性 */
+}
+
+.hero-content .subtitle {
+    font-size: 24px;
+    margin-bottom: 40px;
+    opacity: 0.9;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* 按钮样式 */
+.btn-primary {
+    display: inline-flex; /* 使图标和文字水平对齐 */
+    align-items: center;
+    background-color: #3f51b5; /* 蓝色按钮 */
+    color: #fff;
+    padding: 15px 30px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #303f9f; /* 鼠标悬停时颜色变深 */
+}
+
+.btn-primary i {
+    margin-right: 10px; /* 图标与文字间距 */
+    font-size: 20px;
+}
+
+/* 响应式设计 (可选，但推荐) */
+@media (max-width: 768px) {
+    .header .logo h1 {
+        font-size: 16px;
+    }
+    .hero-content .main-title {
+        font-size: 48px;
+    }
+    .hero-content .subtitle {
+        font-size: 20px;
+    }
+    .btn-primary {
+        padding: 12px 25px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header .logo h1 {
+        display: none; /* 在小屏幕上隐藏标题，只显示 logo */
+    }
+    .hero-content .main-title {
+        font-size: 36px;
+    }
+    .hero-content .subtitle {
+        font-size: 16px;
+    }
+    .btn-primary {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+}
+
+.data-load-page {
+    padding-top: 80px; /* 留出 Header 的空间 */
+    min-height: 100vh;
+    background-color: #f0f2f5; /* 页面背景色 */
+    padding-bottom: 40px;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.page-title {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.page-title i {
+    margin-right: 15px;
+    color: #3f51b5; /* 蓝色图标 */
+    font-size: 32px;
+}
+
+.description {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.form-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.date-input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+}
+
+.date-input-group label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.input-with-icon {
+    position: relative;
+    width: fit-content; /* 根据内容调整宽度 */
+}
+
+.date-picker {
+    width: 200px; /* 日期输入框宽度 */
+    padding: 10px 15px;
+    padding-right: 40px; /* 为图标留出空间 */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #fff; /* 确保背景是白色 */
+}
+
+.input-with-icon .fas {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none; /* 让点击穿透到 input */
+}
+
+.hint {
+    font-size: 12px;
+    color: #999;
+    margin-top: 5px;
+}
+
+/* 按钮样式 */
+.btn-primary-blue, .btn-secondary-gray, .btn-primary-green {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary-blue {
+    background-color: #3f51b5; /* 蓝色 */
+    color: #fff;
+    margin-right: 15px;
+}
+
+.btn-primary-blue:hover {
+    background-color: #303f9f;
+    transform: translateY(-2px);
+}
+
+.btn-primary-blue i, .btn-primary-green i {
+    margin-right: 10px;
+}
+
+.btn-secondary-gray {
+    background-color: #6c757d; /* 灰色 */
+    color: #fff;
+    margin-top: 20px;
+}
+
+.btn-secondary-gray:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+.btn-secondary-gray i {
+    margin-right: 10px;
+}
+
+.btn-primary-green {
+    background-color: #28a745; /* 绿色 */
+    color: #fff;
+    margin-top: 30px; /* 距离表格的距离 */
+}
+
+.btn-primary-green:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+
+/* 成功提示 */
+.alert {
+    padding: 15px 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.success-alert {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert i {
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+/* DataTables 相关的样式覆盖 (可选，使其更符合页面风格) */
+.data-table-section {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    margin-top: 30px;
+}
+
+#scheduleTable_wrapper .dataTables_length,
+#scheduleTable_wrapper .dataTables_filter {
+    margin-bottom: 15px;
+}
+
+#scheduleTable_wrapper .dataTables_length label,
+#scheduleTable_wrapper .dataTables_filter label {
+    font-size: 14px;
+    color: #555;
+    font-weight: normal;
+}
+
+#scheduleTable_wrapper .dataTables_filter input {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+#scheduleTable {
+    width: 100% !important; /* 强制 DataTables 宽度 */
+    margin-bottom: 20px;
+    border-collapse: collapse;
+}
+
+#scheduleTable thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: bold;
+    color: #495057;
+    cursor: pointer;
+    position: relative; /* 为排序图标定位 */
+}
+
+#scheduleTable thead th i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ced4da; /* 默认图标颜色 */
+}
+
+#scheduleTable tbody td {
+    border-bottom: 1px solid #dee2e6;
+    padding: 10px 15px;
+    color: #343a40;
+}
+
+#scheduleTable tbody tr:last-child td {
+    border-bottom: none;
+}
+
+#scheduleTable tbody tr:hover {
+    background-color: #f2f2f2;
+}
+
+/* DataTables Pagination */
+.dataTables_paginate {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.dataTables_paginate .paginate_button {
+    padding: 8px 12px;
+    margin-left: 5px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #007bff;
+    background-color: #fff;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dataTables_paginate .paginate_button.current,
+.dataTables_paginate .paginate_button:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+.dataTables_paginate .paginate_button.disabled {
+    color: #6c757d;
+    cursor: not-allowed;
+    background-color: #e9ecef;
+    border-color: #e9ecef;
+}
+
+/* 响应式调整 (根据需要) */
+@media (max-width: 992px) {
+    .data-table-section {
+        overflow-x: auto; /* 使表格在小屏幕上可水平滚动 */
+    }
+}
+
+main {
+    padding-top: 80px; /* 这个值可以根据您头部栏的实际高度进行微调，80px通常是一个比较合适的值 */
+    padding-bottom: 20px; /* 同时增加一个下边距，让页面底部不那么拥挤 */
+}
+
+.comparison-table-container {
+    overflow-x: auto; /* 在小屏幕上提供水平滚动 */
+}
+
+#comparison-table {
+    width: 100%;
+    border-collapse: collapse; /* 合并边框 */
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+#comparison-table th,
+#comparison-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0; /* 行之间的分隔线 */
+}
+
+#comparison-table thead tr {
+    background-color: #343a40; /* 深色表头背景 */
+    color: #ffffff; /* 白色文字 */
+    font-weight: bold;
+}
+
+#comparison-table tbody tr:nth-of-type(even) {
+    background-color: #f8f9fa; /* 斑马条纹 */
+}
+
+#comparison-table tbody tr:hover {
+    background-color: #f1f1f1; /* 悬停高亮 */
+}
+
+#comparison-table th:first-child,
+#comparison-table td:first-child {
+    font-weight: 500; /* 指标列加粗一点 */
+}
