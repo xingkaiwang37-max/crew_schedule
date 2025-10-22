@@ -460,3 +460,60 @@ main {
 #comparison-table td:first-child {
     font-weight: 500; /* 指标列加粗一点 */
 }
+
+/* --- 【新增】AHP 页面动态内容样式 --- */
+
+/* 表格通用样式 */
+.matrix-table, .weights-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.matrix-table th, .matrix-table td,
+.weights-table th, .weights-table td {
+    border: 1px solid #e0e0e0;
+    padding: 10px 12px;
+    text-align: left;
+}
+
+/* 表头样式 */
+.matrix-table thead, .weights-table thead {
+    background-color: #f5f7fa;
+}
+
+.matrix-table thead th, .weights-table thead th {
+    font-weight: 600;
+    color: #333;
+}
+
+/* 表格第一列（行标题）样式 */
+.matrix-table tbody th {
+    background-color: #f5f7fa;
+    font-weight: 600;
+}
+
+/* D3.js 生成的 SVG 图表容器样式 */
+#overall-weights-chart svg {
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    max-width: 100%;
+    height: auto;
+}
+
+/* D3.js 图表坐标轴文本样式 */
+#overall-weights-chart .tick text {
+    font-size: 12px;
+    fill: #555;
+}
+
+/* D3.js 图表坐标轴线条样式 */
+#overall-weights-chart .domain, #overall-weights-chart .tick line {
+    stroke: #ccc;
+}
+
+/* --- 新增：为结果卡片移除内边距 --- */
+/* 针对ID为 result-section 的 card，移除其内边距，让图表可以贴边 */
+#result-section.card {
+    padding: 0;
+}

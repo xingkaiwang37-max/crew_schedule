@@ -3,11 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const data = {
         goal: "机组人员排班方案选择", // 更新目标
         criteria: [
-            { id: "C1", name: "总飞行时间最大化" },
-            { id: "C2", name: "工作天数最小化" },
-            { id: "C3", name: "外站过夜天数最小化" },
-            { id: "C4", name: "夜航航班次数最小化" },
-            { id: "C5", name: "经过机场数量最小化" }
+            { id: "C1", name: "总飞行时间" },
+            { id: "C2", name: "工作天数" },
+            { id: "C3", name: "外站过夜天数" },
+            { id: "C4", name: "夜航航班次数" },
+            { id: "C5", name: "经过机场数量" }
         ],
         // 假设的替代方案：三名机组人员
         alternatives: [

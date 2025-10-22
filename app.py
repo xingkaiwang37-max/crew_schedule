@@ -73,10 +73,10 @@ def solve_scheduling():
 @app.route('/api/comparison_data')
 def get_comparison_data():
     comparison_data = [
-        {"indicator": "总飞行时间", "single_base": "7979 h", "multi_base": "10845 h"},
+        {"indicator": "日均执勤飞时", "single_base": "4.19 h", "multi_base": "5.01 h"},
         {"indicator": "航班覆盖率", "single_base": "70.69%", "multi_base": "95.17%"},
-        {"indicator": "外站过夜天数", "single_base": "10", "multi_base": "7"},
-        {"indicator": "新增过夜机场数量", "single_base": "3", "multi_base": "1"},
+        {"indicator": "外站过夜天数", "single_base": "1331", "multi_base": "1391"},
+        {"indicator": "新增过夜机场数量", "single_base": "2", "multi_base": "2"},
         {"indicator": "置位次数", "single_base": "1284", "multi_base": "1320"}
     ]
     return jsonify(comparison_data)

@@ -8,38 +8,81 @@
 </head>
 <body>
 
-<div id="container" style="min-width: 800px; height: 400px; margin: 1em auto;"></div>
+<!-- 关键改动 1: 为容器设置一个固定的最大高度，这就是你的 "可视窗口" -->
+<div id="container" style="max-width: 1200px; min-width: 800px; height: 600px; margin: 1em auto;"></div>
 
 <script>
 fetch('/static/data/single_base_gantt_chart_data.json')
   .then(response => response.json())
   .then(data => {
-    // --- 新增的代码开始 ---
+    // --- 关键改动 2: 移除之前动态修改容器高度的代码 ---
+    // 下面这三行代码需要被删除，因为我们希望容器高度是固定的
+    // const rowHeight = 40;
+    // const chartPadding = 100;
+    // const numCategories = data.yAxisCategories.length;
+    // const newHeight = (numCategories * rowHeight) + chartPadding;
+    // document.getElementById('container').style.height = newHeight + 'px';
+
+    // --- 水平滚动计算 (不变) ---
+    let minDate = Infinity;
+    let maxDate = -Infinity;
+    data.seriesData.forEach(task => {
+      if (task.start < minDate) minDate = task.sltart;
+      if (task.end > maxDate) maxDate = task.end;
+    });
+    const day = 1000 * 60 * 60 * 24;
+    const durationDays = Math.ceil((maxDate - minDate) / day);
+    const pixelsPerDay = 3;
+    const newPlotWidth = durationDays * pixelsPerDay;
+
+    // --- 新增：垂直滚动计算 ---
+    // 1. 定义每一行（一个机组人员）在图表上应占用的像素高度
+    const rowHeight = 40; // 您可以调整这个值来控制行间距
     
-    // 1. 定义每一行的大致高度和图表的额外边距
-    const rowHeight = 40; // 每行分配40像素
-    const chartPadding = 100; // 为标题、X轴等上下留出100像素空间
-
-    // 2. 根据机组人员数量计算总高度
+    // 2. 根据机组人员数量计算绘图区需要的最小总高度
     const numCategories = data.yAxisCategories.length;
-    const newHeight = (numCategories * rowHeight) + chartPadding;
-
-    // 3. 将计算出的高度应用到容器上
-    document.getElementById('container').style.height = newHeight + 'px';
-
-    // --- 新增的代码结束 ---
+    const newPlotHeight = numCategories * rowHeight;
 
 
-    // 4. 使用数据初始化图表（这部分代码不变）
+    // --- 初始显示范围的时间戳 (不变) ---
+    const initialStartDate = Date.UTC(2025, 4, 29);
+    const initialVisibleDays = 3;
+    const initialEndDate = initialStartDate + initialVisibleDays * day;
+
+
+    // --- 初始化图表 ---
     Highcharts.ganttChart('container', {
       title: {
         text: '机组排班结果甘特图'
       },
+      chart: {
+        scrollablePlotArea: {
+          minWidth: newPlotWidth,   // 设置绘图区的最小宽度以实现水平滚动
+          minHeight: newPlotHeight  // 设置绘图区的最小高度以实现垂直滚动
+        },
+        events: {
+          load: function () {
+            this.xAxis[0].setExtremes(initialStartDate, initialEndDate);
+          }
+        }
+      },
+      
+      xAxis: {
+        min: minDate,
+        max: maxDate,
+        scrollbar: {
+            enabled: true
+        }
+      },
+
       yAxis: {
         uniqueNames: true,
-        categories: data.yAxisCategories
+        categories: data.yAxisCategories,
+        // --- 关键改动 3: 为 Y 轴也明确启用滚动条 ---
+        scrollbar: {
+            enabled: true
+        }
       },
-      // ... 其他配置保持不变 ...
       series: [{
         name: '排班任务',
         data: data.seriesData

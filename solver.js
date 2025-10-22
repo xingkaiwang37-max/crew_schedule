@@ -8,147 +8,129 @@ document.addEventListener('DOMContentLoaded', function () {
     const ganttContainer = document.getElementById('gantt-container');
     const resultTitle = document.getElementById('result-title');
     const ganttControls = document.getElementById('gantt-controls');
-    const searchInput = document.getElementById('gantt-search-input');
-    const searchBtn = document.getElementById('gantt-search-btn');
-    const resetBtn = document.getElementById('gantt-reset-btn');
-    const analyzeResultBtn = document.getElementById('analyze-result-btn'); // 获取分析按钮
-
-    // 全局变量
-    let originalGanttData = null;
-    let ganttChartInstance = null;
+    const analyzeResultBtn = document.getElementById('analyze-result-btn');
 
     // 返回按钮
-    backBtn.addEventListener('click', () => { window.location.href = 'load_data.html'; });
+    backBtn.addEventListener('click', () => { window.location.href = 'index.html'; });
 
-    // “开始求解”按钮
-    startSolveBtn.addEventListener('click', () => {
-        const selectedMode = document.querySelector('input[name="solver-mode"]:checked').value;
-        const selectedDates = dateRangePicker.selectedDates;
-        if (selectedDates.length < 2) {
-            alert('请选择一个完整的起止日期范围！');
-            return;
-        }
-        const [startDate, endDate] = selectedDates.map(d => d.toISOString().split('T')[0]);
-        resultSection.style.display = 'block';
-        loadingSpinner.style.display = 'block';
-        ganttContainer.style.display = 'none';
-        ganttControls.style.display = 'none';
-        analyzeResultBtn.style.display = 'none'; // 求解开始时先隐藏
-
-        fetch('/api/solve', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mode: selectedMode, startDate: startDate, endDate: endDate }),
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.error) throw new Error(result.error);
-            resultTitle.textContent = `“${selectedMode === 'multi-base' ? '多基地' : '单基地'}”模式求解结果`;
-            return fetch(result.gantt_data_url);
-        })
-        .then(response => {
-            if (!response.ok) throw new Error(`加载甘特图数据失败: ${response.statusText}`);
-            return response.json();
-        })
-        .then(ganttData => {
-            loadingSpinner.style.display = 'none';
-            ganttContainer.style.display = 'block';
-            ganttControls.style.display = 'block';
-            
-            // 【关键代码】在这里显示分析按钮
-            analyzeResultBtn.style.display = 'inline-block'; 
-            
-            originalGanttData = JSON.parse(JSON.stringify(ganttData));
-            createGanttChart(originalGanttData);
-        })
-        .catch(error => {
-            console.error('求解或加载图表失败:', error);
-            loadingSpinner.style.display = 'none';
-            resultTitle.textContent = '求解失败';
-            ganttContainer.innerHTML = `<p style="color: red;">错误: ${error.message}。</p>`;
-            ganttContainer.style.display = 'block';
-        });
-    });
-
-    // 执行搜索的函数
-    function performSearch() {
-        if (!originalGanttData || !ganttChartInstance) return;
-        const searchTerm = searchInput.value.trim().toLowerCase();
-        if (!searchTerm) {
-            updateGanttChart(originalGanttData);
-            return;
-        }
-        const matchedCrewIndices = new Set();
-        originalGanttData.yAxisCategories.forEach((crewId, index) => {
-            if (crewId.toLowerCase().includes(searchTerm)) matchedCrewIndices.add(index);
-        });
-        originalGanttData.seriesData.forEach(task => {
-            if (task.name.toLowerCase().includes(searchTerm)) matchedCrewIndices.add(task.y);
-        });
-        const filteredData = { yAxisCategories: [], seriesData: [] };
-        const oldIndexToNewIndexMap = new Map();
-        originalGanttData.yAxisCategories.forEach((crewId, oldIndex) => {
-            if (matchedCrewIndices.has(oldIndex)) {
-                oldIndexToNewIndexMap.set(oldIndex, filteredData.yAxisCategories.length);
-                filteredData.yAxisCategories.push(crewId);
-            }
-        });
-        originalGanttData.seriesData.forEach(task => {
-            if (matchedCrewIndices.has(task.y)) {
-                const newTask = { ...task };
-                newTask.y = oldIndexToNewIndexMap.get(task.y);
-                filteredData.seriesData.push(newTask);
-            }
-        });
-        updateGanttChart(filteredData);
-    }
-
-    // 搜索事件监听
-    searchInput.addEventListener('input', performSearch);
-    searchBtn.addEventListener('click', performSearch);
-    searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') performSearch(); });
-
-    // 重置按钮
-    resetBtn.addEventListener('click', () => {
-        searchInput.value = '';
-        if (originalGanttData) updateGanttChart(originalGanttData);
-    });
-
-    // 分析结果按钮点击事件
+    // 分析结果按钮
     analyzeResultBtn.addEventListener('click', () => {
-        const selectedMode = document.querySelector('input[name="solver-mode"]:checked').value;
-        window.location.href = `/analysis?mode=${selectedMode}`;
+        alert('跳转到排班结果分析页面...');
+        // window.location.href = 'analysis.html';
     });
 
-    // 更新图表函数
-    function updateGanttChart(data) {
-        if (!ganttChartInstance) return;
-        const processedData = data.seriesData.map(item => ({ ...item, start: new Date(item.start).getTime(), end: new Date(item.end).getTime() }));
-        ganttChartInstance.update({
-            yAxis: { categories: data.yAxisCategories },
-            series: [{ data: processedData }]
+    /**
+     * 使用 Highcharts 创建甘特图的函数
+     * @param {object} data - 从后端获取的图表数据
+     */
+    function createGanttChart(data) {
+        // --- 动态高度和宽度计算 ---
+        const rowHeight = 40; // 每个任务行的高度
+        const numCategories = data.yAxisCategories.length;
+        // 计算绘图区需要完整显示所有任务的最小高度
+        const totalPlotHeight = numCategories * rowHeight;
+
+        // 设置图表容器的可见高度，如果内容超出此高度，将出现滚动条
+        // *** 这是您要调整的参数 ***
+        const visibleChartHeight = 100; // 您可以修改这个值，例如 400 或 800
+        ganttContainer.style.height = visibleChartHeight + 'px';
+
+        let minDate = Infinity;
+        let maxDate = -Infinity;
+        data.seriesData.forEach(task => {
+            if (task.start < minDate) minDate = task.start;
+            if (task.end > maxDate) maxDate = task.end;
+        });
+        const day = 1000 * 60 * 60 * 24;
+        const durationDays = Math.ceil((maxDate - minDate) / day);
+        const pixelsPerDay = 1000;
+        const newPlotWidth = durationDays * pixelsPerDay;
+
+        // --- 设置初始显示范围的时间戳 ---
+        const initialStartDate = Date.UTC(2025, 4, 29); // 2025年5月29日
+        const initialVisibleDays = 30;
+        const initialEndDate = initialStartDate + initialVisibleDays * day;
+
+        // --- 初始化图表 ---
+        Highcharts.ganttChart('gantt-container', {
+            title: {
+                text: '机组排班结果甘特图'
+            },
+            chart: {
+                scrollablePlotArea: {
+                    minWidth: newPlotWidth,
+                    minHeight: totalPlotHeight // 设置绘图区的最小内容高度
+                },
+                events: {
+                    load: function () {
+                        this.xAxis[0].setExtremes(initialStartDate, initialEndDate);
+                    }
+                }
+            },
+            xAxis: {
+                scrollbar: {
+                    enabled: true
+                }
+            },
+            yAxis: {
+                uniqueNames: true,
+                categories: data.yAxisCategories,
+                scrollbar: {
+                    enabled: true // 为 Y 轴启用滚动条
+                }
+            },
+            series: [{
+                name: '排班任务',
+                data: data.seriesData
+            }],
+            tooltip: {
+                pointFormat: '<span>航班号: {point.flightNumber}</span><br/>' +
+                             '<span>机组: {point.yCategory}</span><br/>' +
+                             '<span>开始: {point.start:%Y-%m-%d %H:%M}</span><br/>' +
+                             '<span>结束: {point.end:%Y-%m-%d %H:%M}</span>'
+            }
         });
     }
 
-    // 创建图表函数
-    function createGanttChart(data) {
-        const processedData = data.seriesData.map(item => ({ ...item, start: new Date(item.start).getTime(), end: new Date(item.end).getTime() }));
-        ganttContainer.style.height = '700px';
-        const allStarts = processedData.map(d => d.start).filter(d => !isNaN(d));
-        const allEnds = processedData.map(d => d.end).filter(d => !isNaN(d));
-        const xAxisMin = allStarts.length > 0 ? Math.min(...allStarts) : new Date().getTime();
-        const xAxisMax = allEnds.length > 0 ? Math.max(...allEnds) : new Date().getTime();
-        ganttChartInstance = Highcharts.ganttChart('gantt-container', {
-            chart: { animation: false },
-            title: { text: '机组排班结果甘特图' },
-            yAxis: { uniqueNames: true, categories: data.yAxisCategories, max: 15, scrollbar: { enabled: true, showFull: false } },
-            xAxis: [{ min: xAxisMin, max: xAxisMax, currentDateIndicator: true }],
-            series: [{ name: '排班任务', data: processedData }],
-            tooltip: { pointFormat: '<span><b>{point.name}</b></span><br/><span>从: {point.start:%Y-%m-%d %H:%M}</span><br/><span>到: {point.end:%Y-%m-%d %H:%M}</span>' },
-            lang: { noData: "没有可显示的数据" },
-            navigator: { enabled: true },
-            scrollbar: { enabled: true },
-            rangeSelector: { enabled: true, selected: 0 }
-        });
-    }
+    // “开始求解”按钮点击事件
+    startSolveBtn.addEventListener('click', () => {
+        // UI准备
+        resultSection.style.display = 'block';
+        loadingSpinner.style.display = 'flex';
+        ganttContainer.style.display = 'none';
+        ganttContainer.innerHTML = ''; // 清空旧图表
+        ganttControls.style.display = 'none';
+        analyzeResultBtn.style.display = 'none';
+
+        // 确定要加载的数据文件
+        const solveMode = document.querySelector('input[name="solver-mode"]:checked').value;
+        const dataPath = solveMode === 'single-base'
+            ? 'static/data/single_base_gantt_chart_data.json'
+            : 'static/data/multi_base_gantt_chart_data.json';
+
+        // 模拟求解延迟后加载数据并生成图表
+        setTimeout(() => {
+            fetch(dataPath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('网络响应错误或文件未找到');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 数据加载成功，生成甘特图
+                    loadingSpinner.style.display = 'none';
+                    ganttContainer.style.display = 'block';
+                    createGanttChart(data); // 调用函数创建图表
+                    
+                    analyzeResultBtn.style.display = 'inline-block';
+                })
+                .catch(error => {
+                    console.error('加载甘特图数据失败:', error);
+                    loadingSpinner.style.display = 'none';
+                    ganttContainer.innerHTML = `<p style="color: red;">加载结果数据失败: ${error.message}。请确保文件路径 ${dataPath} 正确。</p>`;
+                    ganttContainer.style.display = 'block';
+                });
+        }, 2000); // 模拟2秒求解时间
+    });
 });

@@ -8,13 +8,15 @@
     <link rel="stylesheet" href="style_solver.css"> <!-- 特定于此页面的样式 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- 引入 Highcharts Gantt JS -->
+    <script src="https://code.highcharts.com/gantt/highcharts-gantt.js"></script>
+    <script src="https://code.highcharts.com/gantt/modules/exporting.js"></script>
 </head>
 <body>
     <header class="header">
         <div class="container">
             <div class="logo">
-                <img src="/static/images/plane_logo.jpg" alt="飞机 Logo">
-                <h1>机器学习驱动的机组排班系统</h1>
+                <h1>基于列生成的迭代分批与释放机组排班算法</h1>
             </div>
         </div>
     </header>
@@ -56,14 +58,16 @@
 
             <!-- 求解结果区域 -->
             <div id="result-section" class="card" style="display: none; margin-top: 20px;">
-                <h3 id="result-title" class="section-title">求解结果</h3>
-                <!-- 加载动画 -->
+                <h3 id="result-title">求解结果</h3>
                 <div id="loading-spinner" class="spinner-container" style="display: none;">
                     <div class="spinner"></div>
-                    <p>正在进行智能求解，请稍候... (预计需要3-5秒)</p>
+                    <p>正在进行智能求解，请稍候...</p>
                 </div>
 
-                <!-- 新增：搜索框 -->
+                <!-- 甘特图容器 (min-height 属性已被完全移除) -->
+                <div id="gantt-container" style="width: 100%; margin-top: 1em;"></div>
+                
+                <!-- 控制按钮 -->
                 <div id="gantt-controls" style="display: none; margin-bottom: 1rem;">
                     <div class="input-with-icon" style="max-width: 400px; display: inline-block;">
                         <input type="text" id="gantt-search-input" placeholder="搜索机组ID或航班号...">
@@ -72,19 +76,13 @@
                     <button id="gantt-search-btn" class="btn-primary-blue" style="margin-left: 10px;">搜索</button>
                     <button id="gantt-reset-btn" class="btn-secondary-gray">重置</button>
                 </div>
-
-                <!-- 甘特图容器 -->
-                <div id="gantt-container" style="width: 100%; min-height: 400px; margin-top: 1em;"></div>
             </div>
         </div>
     </main>
 
-    <!-- Highcharts Gantt JS -->
-    <script src="https://code.highcharts.com/gantt/highcharts-gantt.js"></script>
-    <script src="https://code.highcharts.com/gantt/modules/exporting.js"></script>
     <!-- Flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <!-- 自定义脚本 -->
+    <!-- 自定义脚本 (移除内部脚本，改为引用外部文件) -->
     <script src="solver.js"></script>
 </body>
 </html>
